@@ -1,0 +1,6 @@
+{
+	"listen_port": 9998,
+	"db_name": "localhost/itooii",
+	"admin_server": "localhost",
+	"redis_server": "localhost"
+}
