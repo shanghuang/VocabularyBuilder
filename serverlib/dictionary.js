@@ -49,7 +49,7 @@ function post(req,resp){
     var re = /[ \n;:,.]/; 
     var text_ary = paragraph.split(re);
 
-
+    var new_count = 0;
     text_ary.forEach(async element => {
         if(element.length != 0){
 
@@ -62,7 +62,8 @@ function post(req,resp){
                     date : Date.now(),
                     to_learn: true,
                     sentence : paragraph});
-                    console.log("create new result:"+create_result);
+                console.log("create new result:"+create_result);
+                new_count++;
             }
             else{
                 if(word_found.length == 0){
@@ -71,13 +72,15 @@ function post(req,resp){
                         date : Date.now(),
                         to_learn: false,
                         sentence : paragraph});
-                        console.log("create result:"+create_result);
+                    console.log("create result:"+create_result);
+                    new_count++;
                 }
             }
         }
     });
 
     resp.json({
+        word_added:new_count
     }).end();
 }
 
@@ -120,8 +123,33 @@ function getVocabulary(req,resp){
     });
 }
 
+function get_history(req,resp){
+    let SORT_ORDER = {
+        SORT_BY_DATE : 0,
+        SORT_BY_ALPHABET : 1
+    }
+    var page = req.query.page;
+    var itemsPerPage = req.query.itemsPerPage || 50;
+    var sort_order = req.query.sort_order;
+
+    VocabRecord.find({username: req.query.username, to_learn:true})
+        .sort({data:1})
+        .limit(itemsPerPage)
+        .skip(itemsPerPage*page)
+        .exec(function(err, result){
+            if(err){
+
+            }
+            else{
+                resp.json( { words: result});
+            }
+    });
+
+}
+
 module.exports = {
     get : get,
     post:post,
-    getVocabulary : getVocabulary
+    getVocabulary : getVocabulary,
+    get_history:get_history
 }

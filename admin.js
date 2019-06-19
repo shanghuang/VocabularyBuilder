@@ -75,6 +75,8 @@ app.post('/tutor', tutor.updateStatus)
 app.get('/dictionary', dictionary.get);
 app.post('/dictionary', dictionary.post);
 app.get('/vocabulary', dictionary.getVocabulary);
+app.get('/history', dictionary.get_history);
+
 
 app.listen(config.listen_port, function () {
     console.log('ready on port ' + config.listen_port);

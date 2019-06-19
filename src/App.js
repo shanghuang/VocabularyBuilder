@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import PropTypes, {instanceOf} from 'prop-types';
 import Management from './management'
 import Vocabulary from './vocabulary'
+import History from './history'
 import Login from './login'
 import Register from './register'
 import api from './shared/apiHelper'
@@ -30,14 +31,14 @@ class Layout extends Component {
     this.logout = this.logout.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
+  /*componentWillReceiveProps(nextProps){
     if( (nextProps.username !== this.state.username)  ) 
     {
       this.setState({
         username:nextProps.username,
       });
     }
-  }
+  }*/
 
   static getDerivedStateFromProps(nextProps, prevState) {
     // do things with nextProps.someProp and prevState.cachedSomeProp
@@ -47,26 +48,10 @@ class Layout extends Component {
     };
   }
 
-  async componentWillMount(){
+  componentDidMount(){
     var token = this.props.cookies.get('access_token');
     if(token){
-      let response = await api.get('/access_token');
-      if((response != null) && (response.body.username!="") ){
-          //Actions.setUserInfo(null);
-          this.props.onReturn({
-                'username': response.body.username,//this.refs.username.value,
-                //'email': "",
-                //'access_token':token,
-              });
-          //cookie.remove('admin_access_token');
-          //this.context.history.pushState(null, '/manage/user');
-          this.setState({login_success:true});
-        }
-        else {
-          this.props.cookies.remove('access_token');
-          this.setState({login_success:false});
-        }
-      /*api.get('/access_token').end( (err, result) => {
+      api.get('/access_token').end( (err, result) => {
         if((!err) && (result.body.username!="") ){
           //Actions.setUserInfo(null);
           this.props.onReturn({
@@ -83,7 +68,7 @@ class Layout extends Component {
           this.setState({login_success:false});
         }
 
-      });*/
+      });
     }
   }
 
@@ -132,12 +117,11 @@ class Layout extends Component {
 
       <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul className="nav navbar-nav">
-          <li className="active"><a href="#">Link <span className="sr-only">(current)</span></a></li>
-          <li><a href="#">Link</a></li>
+          <li className="active"><a href="/">Vocabulary <span className="sr-only">(current)</span></a></li>
+          <li className="active"><a href="/history">History</a></li>
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="#">Action</a></li>
               <li><a href="#">Another action</a></li>
               <li><a href="#">Something else here</a></li>
               <li role="separator" className="divider"></li>
@@ -165,7 +149,7 @@ class Layout extends Component {
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="#">Action</a></li>
+              <li><a href="history">History</a></li>
               <li><a href="#">Another action</a></li>
               <li><a href="#">Something else here</a></li>
               <li role="separator" className="divider"></li>
@@ -179,6 +163,7 @@ class Layout extends Component {
   <div id="" className="container">
         <Route path="/" exact component={() => <Vocabulary username={this.state.username} />} />
         <Route path='/manage' component={Management} />
+        <Route path='/history' component={() => <History username={this.state.username} />}/>
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
   </div>

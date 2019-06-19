@@ -17,6 +17,7 @@ class Vocabulary extends Component{
             words:[],
             selected_words:new Set(),
             translated:'',
+            message:""
 		};
 		console.log('constructor!');
 
@@ -94,7 +95,7 @@ class Vocabulary extends Component{
 
         let result = await api.post('/dictionary', data);
 		if(result != null){
-
+            this.setState({ message: result.body.word_added + " new items added to vocabulary" });
         }
 
         this.setState({selected_words:new Set()});
@@ -112,29 +113,32 @@ class Vocabulary extends Component{
 
     render(){
         var words = this.state.words;
-        var style_text_wrap = {'word-break': 'break-all',
-                                'border-width':'1px',
-                                'border-style':'solid',
+        var style_text_wrap = {'wordBreak': 'break-all',
+                                'borderWidth':'1px',
+                                'borderStyle':'solid',
                                 'margin': '5px'};
 		return(
 <div className="row">
-    <div class="col-md-6">
+    <div className="col-md-6">
         <form>
-            <div class="form-group">
-                <textarea class = "form-control" rows = "3" value={this.state.text} onChange={this.handleTextChange} placeholder = "Player Details"></textarea>
+            <div className="form-group">
+                <textarea className = "form-control" rows = "3" value={this.state.text} onChange={this.handleTextChange} placeholder = "Player Details"></textarea>
             </div>
         </form>
         <div style={style_text_wrap}>
             {words.map( wi => <ClickText word_info={wi}  clickHandler={this.handleWordClick}/> )}
         </div>
     </div>
-    <div class="col-md-6">
+    <div className="col-md-6">
         <div style={style_text_wrap}>
         {Array.from(this.state.selected_words).map( w =>{ return (<div> {w} <br/></div>); } ) }
         </div>
-        <button type="button" onClick={this.handleAddVocabulary}>Click Me!</button>
+        <button type="button" onClick={this.handleAddVocabulary}>Update Vocabulary</button>
         <div style={style_text_wrap}>
             <p dangerouslySetInnerHTML={{__html: this.state.translated}} />
+        </div>
+        <div>
+            {this.state.message}
         </div>
     </div>
 </div>

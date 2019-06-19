@@ -10,15 +10,15 @@ class ClickText extends Component {
       JustLearned:1,
       NotInVocabulary:2
     }
-    var color = { color:'black', 'padding-right': '10px'};
+    var color = { color:'black', 'paddingRight': '10px'};
     if( this.props.word_info.selected ) { 
-      color = { color:'red', 'padding-right': '10px' };
+      color = { color:'red', 'paddingRight': '10px' };
     }
     else if(this.props.word_info.voc_status == VOCAB_STATUS.JustLearned){
-      color = { color:'pink', 'padding-right': '10px' };
+      color = { color:'pink', 'paddingRight': '10px' };
     }
     else if(this.props.word_info.voc_status == VOCAB_STATUS.NotInVocabulary){
-      color = { color:'green', 'padding-right': '10px' };
+      color = { color:'green', 'paddingRight': '10px' };
     }
 
     return(
