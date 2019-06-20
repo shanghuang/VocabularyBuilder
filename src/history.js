@@ -45,7 +45,7 @@ class History extends Component{
     
     handlePrevpage(event){
         if(this.state.page>0){
-            this.getPage(this.state.page+1);
+            this.getPage(this.state.page-1);
             this.setState({page:this.state.page+1});
         }
     }

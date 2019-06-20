@@ -42,20 +42,59 @@ function get(req,resp){
 
 };
 
+function contains(ary,element){
+    ary.some( x => { x===element } );
+}
+
 function post(req,resp){
 
-    var words2add = req.body.words2add.toLowerCase();
+    var words2add = JSON.parse(req.body.words2add.toLowerCase());
     var paragraph = req.body.paragraph.toLowerCase();
     var re = /[ \n;:,.]/; 
     var text_ary = paragraph.split(re);
 
+    console.log("words2add:"+words2add);
+
     var new_count = 0;
-    text_ary.forEach(async element => {
+
+    var jobs = text_ary.map( async element => {
+        return await VocabRecord.find({word : element.toLowerCase()});
+    });
+
+    Promise.all(jobs).then((found_result) => {
+        //var exists = found_result.map(x => x.length!=0);
+        var words_not_in_voc = [];
+        for(var i=0;i<found_result.length; i++){
+            var not_in_voc = (found_result[i].length == 0);
+            if(not_in_voc || words2add.includes(text_ary[i])){
+                words_not_in_voc.push(text_ary[i]);
+            }
+        }
+        var r1 = words2add.includes("demurred");
+        var r2 = words2add.some(x => x==="demurred")
+        console.log("words_not_in_voc:"+words_not_in_voc);
+        var jobs2 = words_not_in_voc.map( async element => {
+            return await VocabRecord.create({username: req.body.username,
+                word : element,
+                date : Date.now(),
+                to_learn: words2add.includes(element),
+                sentence : paragraph});
+        });
+
+        Promise.all(jobs2).then( () => {
+            resp.json({
+                word_added:words_not_in_voc.length
+            }).end();
+        });
+
+    });
+/*    text_ary.forEach(async element => {
         if(element.length != 0){
 
             var queryString={word : element};
-            var word_found = await VocabRecord.find(queryString);
-            var isnew = words2add.includes(element);
+            //var isnew = words2add.includes(element);
+            console.log("type of words2add:" + typeof(word2add));
+            var isnew =  words2add.some( function(item, index, array){ return (x===element);  } );
             if(isnew){
                 var create_result = await VocabRecord.create({username: req.body.username,
                     word : element,
@@ -63,25 +102,30 @@ function post(req,resp){
                     to_learn: true,
                     sentence : paragraph});
                 console.log("create new result:"+create_result);
+                jobs.push(create_result);
                 new_count++;
             }
             else{
+                var word_found = await VocabRecord.find(queryString);
                 if(word_found.length == 0){
                     var create_result = await VocabRecord.create({username: req.body.username,
                         word : element,
                         date : Date.now(),
                         to_learn: false,
                         sentence : paragraph});
-                    console.log("create result:"+create_result);
+                    //console.log("create result:"+create_result);
+                    jobs.push(create_result);
                     new_count++;
                 }
             }
         }
     });
-
-    resp.json({
-        word_added:new_count
-    }).end();
+    Promise.all(jobs).then( () => {
+        resp.json({
+            word_added:new_count
+        }).end();
+    });
+*/
 }
 
 let VOCAB_STATUS={
@@ -95,7 +139,7 @@ function getVocabulary(req,resp){
     var words = req.query.words;
     if(words.length == 0){
         resp.json({
-            'voc_state':{},
+            'voc_state':[],
         }).end();
         return;
     }

@@ -45,7 +45,7 @@ class Vocabulary extends Component{
 
         var data = {words: trim_text};
         var result = await api.get('/vocabulary',null, data);
-		if(result != null){
+		if( (result != null) && (this.state.words.length!=0) && (result.body.voc_state!=null) && (result.body.voc_state.length!=0)){
             var voc_state = result.body.voc_state;
             var words = this.state.words;
             for(var i=0;i<words.length; i++){
