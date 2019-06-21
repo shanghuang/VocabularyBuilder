@@ -42,9 +42,6 @@ function get(req,resp){
 
 };
 
-function contains(ary,element){
-    ary.some( x => { x===element } );
-}
 
 function post(req,resp){
 
@@ -78,7 +75,8 @@ function post(req,resp){
                 word : element,
                 date : Date.now(),
                 to_learn: words2add.includes(element),
-                sentence : paragraph});
+                sentence : paragraph.split(".").find(s => s.includes(element))
+            });
         });
 
         Promise.all(jobs2).then( () => {
