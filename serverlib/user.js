@@ -1,10 +1,9 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var config = require('../config.json');
 var bodyParser = require('body-parser');
 var uuid = require('node-uuid');
 var util = require('./util.js');
-var config = require('../config.json');
+var config = require('../src/config.json');
 
 
 var ObjectId = mongoose.Schema.Types.ObjectId;
@@ -309,7 +308,7 @@ async function post_add(req,resp){
         <body>
           <div>
                <p>Just click on the button below - simple as that.</p>
-               <a href=http://` + config.admin_server + `:9998/confirm/` + verify_link + `>Confirm now</a>
+               <a href=` + config.admin_server + `/confirm/` + verify_link + `>Confirm now</a>
           </div>
         </body>
     </html>`;
@@ -379,7 +378,7 @@ async function check_confirm(req,resp){
                     console.log(err ? "redis del key error:" + key : "");
                 });*/
                 //resp.end();
-                resp.redirect('http://' + config.admin_server + ':3000');
+                resp.redirect(config.web_server);
             });
         }
     }
