@@ -1,6 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var config = require('../config.json');
+var config = require('../src/config.json');
 var bodyParser = require('body-parser');
 var uuid = require('node-uuid');
 var util = require('./util.js');
