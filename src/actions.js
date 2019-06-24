@@ -16,7 +16,7 @@ export const logoutAction = () => {
 export function loginAction(params) {
 		return {
 			type: 'login',
-			username: params.username,
+			email: params.email,
 			access_token : params.access_token
 		};
 }

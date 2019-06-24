@@ -17,6 +17,7 @@ class Login extends Component{
 		super(props);
     	this.state = {
 			username: '',
+			email:'',
 			password: '',
 			rememberMe: false,
 			login_success: false
@@ -28,7 +29,7 @@ class Login extends Component{
 	}
 
 	handleChange(event){
-		this.setState({username: event.target.value});
+		this.setState({email: event.target.value});
 	}
 
 	passwordChange(event){
@@ -38,7 +39,7 @@ class Login extends Component{
 	async handleLogin(event){
 		event.preventDefault();
 		var data = {
-			'name': this.state.username,
+			'email': this.state.email,
 			'password': this.state.password,
 		};
 
@@ -47,7 +48,7 @@ class Login extends Component{
 			var token = result.body.access_token;
 
 	        this.props.onLogin({
-	          'username': this.state.username,
+	          'email': this.state.email,
 	          'access_token': token,
 	        });
 	        this.props.cookies.set('access_token', token);
@@ -106,7 +107,7 @@ class Login extends Component{
 <div className="wrapper">
     <form className="form-signin" onSubmit={this.handleLogin}>
       <h2 className="form-signin-heading">Please login</h2>
-      <input type="text" className="form-control" value={this.state.username} placeholder="User Name" onChange={this.handleChange} required="" autoFocus="" />
+      <input type="text" className="form-control" value={this.state.email} placeholder="Email" onChange={this.handleChange} required="" autoFocus="" />
       <input type="password" className="form-control" value={this.state.password} placeholder="Password" onChange={this.passwordChange} required=""/>
       <label className="checkbox">
         <input type="checkbox" value={this.state.rememberMe} id="rememberMe" name="rememberMe" /> Remember me

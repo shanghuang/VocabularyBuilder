@@ -28,7 +28,7 @@ class History extends Component{
     }
     
     getPage(p, sortBy){
-        api.get('/history', null, { username:this.props.username,
+        api.get('/history', null, { email:this.props.email,
                                     page:p,
                                     sort_order:sortBy})
         .end( (err, result) => {
@@ -89,7 +89,7 @@ class History extends Component{
                                 'border-width':'1px',
                                 'border-style':'solid',
                                 'margin': '5px'};
-        var isLogin = ( (this.props.username != null) && (this.props.username != "") );
+        var isLogin = ( (this.props.email != null) && (this.props.email != "") );
         
         if( !isLogin ){
             return(<div className="row">Login required!</div>)

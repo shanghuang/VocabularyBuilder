@@ -196,11 +196,11 @@ function post_test_adduser(req,resp){
 };
 
 async function post_login(req,resp){
-    let email = req.body.name;
+    let email = req.body.email;
     let password = req.body.password;
 
     try{
-        let result = await User.findOne({email:req.body.name });
+        let result = await User.findOne({email:req.body.email });
         if(result) {
             var encoded_passwd = util.encode_password(password);
             if(result.password != encoded_passwd){
@@ -262,10 +262,10 @@ async function post_login(req,resp){
 };
 
 function get_access_token(req,resp){
-    var email = req.body.name;
+    var email = req.body.email;
     var key = global.redisclient.get("token:" + req.query.access_token, function(err,redis_result){
         if(redis_result == null){
-            resp.json({username:""}).end();
+            resp.json({email:""}).end();
         }
         else{
             User.findById(redis_result , function(err, result){
@@ -274,7 +274,7 @@ function get_access_token(req,resp){
                 }
                 else{
                     resp.json({
-                        username:result.name,
+                        email:result.email,
                     }).end();
                 }
             });

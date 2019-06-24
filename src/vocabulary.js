@@ -91,7 +91,7 @@ class Vocabulary extends Component{
     async handleAddVocabulary(event){
 
         var words2add = JSON.stringify(Array.from(this.state.selected_words));
-        var data = {username: this.props.username,
+        var data = {email: this.props.email,
                     words2add : words2add,
                     paragraph: this.state.text};
 
@@ -114,7 +114,7 @@ class Vocabulary extends Component{
     }
 
     render(){
-        var isLogin = ( (this.props.username != null) && (this.props.username != "") );
+        var isLogin = ( (this.props.email != null) && (this.props.email != "") );
         var words = this.state.words;
         var style_text_wrap = {'wordBreak': 'break-all',
                                 'borderWidth':'1px',

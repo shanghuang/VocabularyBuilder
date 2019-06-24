@@ -10,7 +10,7 @@ var WordSchema = new mongoose.Schema({
 var Word = GLOBAL.dict_db_conn.model('dictionary', WordSchema);
 
 var VocabSchema = new mongoose.Schema({
-    username: String,
+    email: String,
     word : String,
     lemmatized : String,
     date : Date,
@@ -91,7 +91,7 @@ function post(req,resp){
 
         //console.log("words_not_in_voc:"+words_not_in_voc);
         var jobs2 = words_not_in_voc.map( async element => {
-            return await VocabRecord.create({username: req.body.username,
+            return await VocabRecord.create({email: req.body.email,
                 word : element.word,
                 lemmatized : element.lemmatized,
                 date : Date.now(),
@@ -195,7 +195,7 @@ function get_history(req,resp){
     var itemsPerPage = req.query.itemsPerPage || 50;
     var sort_order = req.query.sort_order == 0 ? {date:1} : {word:1};
 
-    VocabRecord.find({username: req.query.username, to_learn:true})
+    VocabRecord.find({email: req.query.email, to_learn:true})
         .sort(sort_order)
         .limit(itemsPerPage)
         .skip(itemsPerPage*page)

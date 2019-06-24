@@ -2,13 +2,13 @@ function user_info(state,action){
 	switch(action.type){
 	case 'login':
 		return {
-			username : action.username,
+			email : action.email,
 			access_token : action.access_token,
 		};
 
 	case 'logout':
 		return {
-			username : null,
+			email : null,
 			access_token : null,
 		};
 

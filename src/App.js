@@ -25,7 +25,7 @@ class Layout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        username:props.username,
+        email:props.email,
         login_success:false,
     }
     this.logout = this.logout.bind(this);
@@ -43,7 +43,7 @@ class Layout extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     // do things with nextProps.someProp and prevState.cachedSomeProp
     return {
-        username:nextProps.username,
+        email:nextProps.email,
         access_token:nextProps.access_token,
     };
   }
@@ -52,10 +52,10 @@ class Layout extends Component {
     var token = this.props.cookies.get('access_token');
     if(token){
       api.get('/access_token').end( (err, result) => {
-        if((!err) && (result.body.username!="") ){
+        if((!err) && (result.body.email!="") ){
           //Actions.setUserInfo(null);
           this.props.onReturn({
-                'username': result.body.username,//this.refs.username.value,
+                'email': result.body.email,
                 //'email': "",
                 //'access_token':token,
               });
@@ -138,9 +138,9 @@ class Layout extends Component {
           <button type="submit" className="btn btn-default">Submit</button>
         </form>
         <ul className="nav navbar-nav navbar-right">
-          { this.state.username ?
+          { this.state.email ?
               <div className="nav navbar-nav">
-                <li><a href="#">Hi! {this.state.username}</a></li>
+                <li><a href="#">Hi! {this.state.email}</a></li>
                 <li><button type="button" className="btn btn-default" onClick={this.logout}>Logout</button></li>              </div>
             :
                 <a href="/login" className="btn btn-default">Login</a>
@@ -161,9 +161,9 @@ class Layout extends Component {
     </div>
   </nav>
   <div id="" className="container">
-        <Route path="/" exact component={() => <Vocabulary username={this.state.username} />} />
+        <Route path="/" exact component={() => <Vocabulary email={this.state.email} />} />
         <Route path='/manage' component={Management} />
-        <Route path='/history' component={() => <History username={this.state.username} />}/>
+        <Route path='/history' component={() => <History email={this.state.email} />}/>
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
   </div>
@@ -182,7 +182,7 @@ Layout.contextTypes = {
 function mapStateToProps(state, ownProps){
   console.log("app:mapStateToProps")
   return {
-    username : state.user_info? state.user_info.username : null,
+    email : state.user_info? state.user_info.email : null,
   };
 };
 
