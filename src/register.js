@@ -98,7 +98,7 @@ class Register extends Component{
 
   render(){
     if(this.state.registration_success){
-      return (<Redirect to='/manage/user'/>);
+      return (<Redirect to='/login'/>);
     }
 
     var validateError = this.state.validateError;

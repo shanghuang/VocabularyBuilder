@@ -17,6 +17,7 @@ class Vocabulary extends Component{
             words:[],
             selected_words:new Set(),
             translated:'',
+            word_translated : "",
             message:""
 		};
 		console.log('constructor!');
@@ -82,7 +83,8 @@ class Vocabulary extends Component{
 		if(result != null){
             var tx_text = result.body.translated;
             tx_text = tx_text.split("\n").join(" <br> ");
-            this.setState({translated:tx_text});
+            this.setState({ translated : tx_text, 
+                            word_translated : result.body.word});
         }
     }
     
@@ -112,6 +114,7 @@ class Vocabulary extends Component{
     }
 
     render(){
+        var isLogin = ( (this.props.username != null) && (this.props.username != "") );
         var words = this.state.words;
         var style_text_wrap = {'wordBreak': 'break-all',
                                 'borderWidth':'1px',
@@ -133,8 +136,9 @@ class Vocabulary extends Component{
         <div style={style_text_wrap}>
         {Array.from(this.state.selected_words).map( w =>{ return (<div> {w} <br/></div>); } ) }
         </div>
-        <button type="button" onClick={this.handleAddVocabulary}>Update Vocabulary</button>
+        <button className="btn btn-default" type="button" disabled={!isLogin} onClick={this.handleAddVocabulary}>Update Vocabulary</button>
         <div style={style_text_wrap}>
+            <span>{this.state.word_translated}</span>
             <p dangerouslySetInnerHTML={{__html: this.state.translated}} />
         </div>
         <div>

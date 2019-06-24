@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var lemmatizer = require('lemmatizer');
 
 var WordSchema = new mongoose.Schema({
     word : String,
@@ -11,6 +12,7 @@ var Word = GLOBAL.dict_db_conn.model('dictionary', WordSchema);
 var VocabSchema = new mongoose.Schema({
     username: String,
     word : String,
+    lemmatized : String,
     date : Date,
     to_learn: Boolean,
     sentence : String
@@ -19,27 +21,42 @@ var VocabSchema = new mongoose.Schema({
 var VocabRecord = GLOBAL.dict_db_conn.model('vocab_record', VocabSchema);
 
 function get(req,resp){
-    //var queryString = req.query.dbquery || {};
-    var queryString={'word' : 'tutor'};
+
+    var lemmatized_word = lemmatizer.lemmatizer(req.query.word.toLowerCase());
     if(req.query.word){
-        queryString = {'word' : req.query.word };
+        queryString = {'word' : lemmatized_word || req.query.word };
     }
 
-    var query2exec = Word.find(queryString);
+    var query2exec = Word.find({'word' :  req.query.word });
     query2exec.exec(function(err, result){
         if(err){
             console.log("exec query "+ req.query.dbquery + "failed!");
         }
         else{
-            var response =  (result.length>0)? result[0].translated : "";
-            //response = response.split("\n").join("<br/>");
-            resp.json({
-                'translated':response,
-            }).end();
-
+            if( result.length>0 ){
+                resp.json({
+                    'word': req.query.word,
+                    'translated':result[0].translated,
+                }).end();
+            }
+            else{
+                Word.find({'word' :  lemmatized_word }).exec(function(err, result){
+                    if(err){
+                        console.log("exec query "+ req.query.dbquery + "failed!");
+                        //todo:response error status
+                    }
+                    else{
+                        var response =  (result.length>0)? result[0].translated : "";
+                        //response = response.split("\n").join("<br/>");
+                        resp.json({
+                            'word': lemmatized_word,
+                            'translated':response,
+                        }).end();
+                    }
+                });
+            }
         }
     });
-
 };
 
 
@@ -49,13 +66,15 @@ function post(req,resp){
     var paragraph = req.body.paragraph.toLowerCase();
     var re = /[ \n;:,.]/; 
     var text_ary = paragraph.split(re);
+    var lemmatized_ary = text_ary.map( x=> lemmatizer.lemmatizer(x.toLowerCase()));
 
     console.log("words2add:"+words2add);
 
     var new_count = 0;
 
-    var jobs = text_ary.map( async element => {
-        return await VocabRecord.find({word : element.toLowerCase()});
+    var jobs = lemmatized_ary.map( async element => {
+        //return await VocabRecord.find({word : element.toLowerCase()});
+        return await VocabRecord.find({lemmatized : element});
     });
 
     Promise.all(jobs).then((found_result) => {
@@ -64,18 +83,20 @@ function post(req,resp){
         for(var i=0;i<found_result.length; i++){
             var not_in_voc = (found_result[i].length == 0);
             if(not_in_voc || words2add.includes(text_ary[i])){
-                words_not_in_voc.push(text_ary[i]);
+                words_not_in_voc.push(
+                            {   word:text_ary[i],
+                                lemmatized:lemmatized_ary[i] });
             }
         }
-        var r1 = words2add.includes("demurred");
-        var r2 = words2add.some(x => x==="demurred")
-        console.log("words_not_in_voc:"+words_not_in_voc);
+
+        //console.log("words_not_in_voc:"+words_not_in_voc);
         var jobs2 = words_not_in_voc.map( async element => {
             return await VocabRecord.create({username: req.body.username,
-                word : element,
+                word : element.word,
+                lemmatized : element.lemmatized,
                 date : Date.now(),
-                to_learn: words2add.includes(element),
-                sentence : paragraph.split(".").find(s => s.includes(element))
+                to_learn: words2add.includes(element.word),
+                sentence : paragraph.split(".").find(s => s.includes(element.word))
             });
         });
 
@@ -172,10 +193,10 @@ function get_history(req,resp){
     }
     var page = req.query.page;
     var itemsPerPage = req.query.itemsPerPage || 50;
-    var sort_order = req.query.sort_order;
+    var sort_order = req.query.sort_order == 0 ? {date:1} : {word:1};
 
     VocabRecord.find({username: req.query.username, to_learn:true})
-        .sort({data:1})
+        .sort(sort_order)
         .limit(itemsPerPage)
         .skip(itemsPerPage*page)
         .exec(function(err, result){

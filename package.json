@@ -10,6 +10,7 @@
     "cors": "^2.8.4",
     "history": "^4.7.2",
     "js-md5": "^0.7.3",
+    "lemmatizer": "0.0.1",
     "mongodb": "^3.2.7",
     "mongoose": "^5.0.15",
     "node-uuid": "^1.4.8",

@@ -4,6 +4,7 @@ var config = require('../config.json');
 var bodyParser = require('body-parser');
 var uuid = require('node-uuid');
 var util = require('./util.js');
+var config = require('../config.json');
 
 
 var ObjectId = mongoose.Schema.Types.ObjectId;
@@ -308,7 +309,7 @@ async function post_add(req,resp){
         <body>
           <div>
                <p>Just click on the button below - simple as that.</p>
-               <a href=http://localhost:9998/confirm/` + verify_link + `>Confirm now</a>
+               <a href=http://` + config.admin_server + `:9998/confirm/` + verify_link + `>Confirm now</a>
           </div>
         </body>
     </html>`;
@@ -378,7 +379,7 @@ async function check_confirm(req,resp){
                     console.log(err ? "redis del key error:" + key : "");
                 });*/
                 //resp.end();
-                resp.redirect('http://localhost:3000');
+                resp.redirect('http://' + config.admin_server + ':3000');
             });
         }
     }
