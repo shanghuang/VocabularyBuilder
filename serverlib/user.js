@@ -359,8 +359,8 @@ async function post_add(req,resp){
         to:req.body.email,
         link:link_html,
     };
-    util.SendConfirmationEmail(info);
-
+    //util.SendConfirmationEmail(info);
+    util.SendGridSendEmail(info);
     resp.end();
 
 }

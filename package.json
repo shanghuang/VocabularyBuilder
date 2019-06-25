@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "binary-file": "^0.2.1",
     "bootstrap": "^3.3.7",
     "cookie": "^0.3.1",

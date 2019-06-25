@@ -4,5 +4,6 @@
 	"web_server": "http://localhost:3000",
 	"admin_server": "http://localhost:9998",
 	"redis_server": "localhost",
-	"api_server": "http://localhost:9000"
+	"api_server": "http://localhost:9000",
+	"send_grid_key": "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"
 }
