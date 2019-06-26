@@ -125,7 +125,7 @@ class Vocabulary extends Component{
     <div className="col-md-6">
         <form>
             <div className="form-group">
-                <textarea className = "form-control" rows = "3" value={this.state.text} onChange={this.handleTextChange} placeholder = "Player Details"></textarea>
+                <textarea className = "form-control" rows = "3" value={this.state.text} onChange={this.handleTextChange} placeholder = "Paste text here!"></textarea>
             </div>
         </form>
         <div style={style_text_wrap}>
