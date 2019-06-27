@@ -203,7 +203,7 @@ async function post_login(req,resp){
         console.log( "login "+ req.body.email);
         let result = await User.findOne({email:req.body.email });
         if(result) {
-            console.log( "login "+ req.body.email + " found!");
+            console.log( "login "+ req.body.email + " found,password:"+password);
             var encoded_passwd = util.encode_password(password);
             console.log( "result.password:"+result.password);
             console.log( "encoded_passwd:"+encoded_passwd);
