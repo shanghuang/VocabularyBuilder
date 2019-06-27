@@ -37,8 +37,8 @@ function SendConfirmationEmail(info){
 }
 
 function SendGridSendEmail(info){
-	//sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-	sgMail.setApiKey(config.send_grid_key);
+	sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+	//sgMail.setApiKey(config.send_grid_key);
 	const msg = {
 		to: info.to,
 		from: 'sycruise.huang@gmail.com',
