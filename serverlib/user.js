@@ -206,11 +206,13 @@ async function post_login(req,resp){
             console.log( "login "+ req.body.email + " found!");
             var encoded_passwd = util.encode_password(password);
             if(result.password != encoded_passwd){
-                //todo
+                console.log( "login password not match!");
             }
             else{
                 var token = uuid.v4();
+                console.log( "login redis1!");
                 global.redisclient.set("token:" + token, result.id);     //callback?
+                console.log( "login redis2!");
                 resp.json({
                     access_token:token,
                 }).end();
