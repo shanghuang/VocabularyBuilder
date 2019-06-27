@@ -205,6 +205,8 @@ async function post_login(req,resp){
         if(result) {
             console.log( "login "+ req.body.email + " found!");
             var encoded_passwd = util.encode_password(password);
+            console.log( "result.password:"+result.password);
+            console.log( "encoded_passwd:"+encoded_passwd);
             if(result.password != encoded_passwd){
                 console.log( "login password not match!");
             }
