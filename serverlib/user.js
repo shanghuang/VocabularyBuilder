@@ -200,8 +200,10 @@ async function post_login(req,resp){
     let password = req.body.password;
 
     try{
+        console.log( "login "+ req.body.email);
         let result = await User.findOne({email:req.body.email });
         if(result) {
+            console.log( "login "+ req.body.email + " found!");
             var encoded_passwd = util.encode_password(password);
             if(result.password != encoded_passwd){
                 //todo
