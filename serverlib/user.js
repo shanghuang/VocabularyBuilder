@@ -184,7 +184,7 @@ function post_test_adduser(req,resp){
             });
             testuser.save(function (err, userObj) {
               if (err) {
-                console.log(err);
+                console.log("mongo, save user err:"+err);
               } else {
                 console.log('saved successfully:', userObj);
               }
@@ -352,7 +352,7 @@ async function post_add(req,resp){
         console.log('Add user(:' + req.body.name + '), ' +  res);
     }
     catch(err){
-
+        console.log('Add user(:' + req.body.name + '), error:' +  err);
     }
 
     var info = {
