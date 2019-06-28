@@ -41,7 +41,22 @@ GLOBAL.dict_db_conn = dict_db_conn;
 var dictionary = require('./serverlib/dictionary.js');
 
 var app = express();
-app.use(cors());
+
+/*const corsOptions = {
+  origin: 'https://72.14.184.182:3000'
+}*/
+const whitelist = ['http://72.14.184.182:3000', 'http://localhost:3000']
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+app.use(cors(corsOptions));
 
 var router = express.Router();
 app.use(cookieparser());

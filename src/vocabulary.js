@@ -49,7 +49,7 @@ class Vocabulary extends Component{
 		if( (result != null) && (this.state.words.length!=0) && (result.body.voc_state!=null) && (result.body.voc_state.length!=0)){
             var voc_state = result.body.voc_state;
             var words = this.state.words;
-            for(var i=0;i<words.length; i++){
+            for(var i=0; i<Math.min(words.length, voc_state.length); i++){
                 if(voc_state[i].word === words[i].word){
                     words[i].voc_status = voc_state[i].status;
                 }
