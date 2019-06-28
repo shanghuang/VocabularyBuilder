@@ -100,66 +100,45 @@ class Layout extends Component {
 
     var token = this.props.cookies.get('access_token');
     return (
-<div>
+<div className="container" >
+
   <nav className="navbar navbar-default">
     <div className="container-fluid">
 
       <div className="navbar-header">
         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <span className="sr-only">Toggle navigation</span>
+          <span className="navbar-toggler-icon"></span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
         </button>
-        <a className="navbar-brand" href="#">Brand</a>
+        <a className="navbar-brand" href="/"></a>
       </div>
 
 
       <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul className="nav navbar-nav">
-          <li className="active"><a href="/">Vocabulary <span className="sr-only">(current)</span></a></li>
-          <li className="active"><a href="/history">History</a></li>
-          <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
-            <ul className="dropdown-menu">
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" className="divider"></li>
-              <li><a href="#">Separated link</a></li>
-              <li role="separator" className="divider"></li>
-              <li><a href="#">One more separated link</a></li>
-            </ul>
-          </li>
+          <li className="active"><a href="/">新增字彙 <span className="sr-only">(current)</span></a></li>
+          <li className="active"><a href="/history">查詢</a></li>
+          <li className="active"><a href="/qanda">Q&A</a></li>
         </ul>
-        <form className="navbar-form navbar-left" role="search">
-          <div className="form-group">
-            <input type="text" className="form-control" placeholder="Search"  />
-          </div>
-          <button type="submit" className="btn btn-default">Submit</button>
-        </form>
         <ul className="nav navbar-nav navbar-right">
           { this.state.email ?
               <div className="nav navbar-nav">
-                <li><a href="#">Hi! {this.state.email}</a></li>
+                <li><a href="#">{this.state.email}</a></li>
                 <li><button type="button" className="btn btn-default" onClick={this.logout}>Logout</button></li>              </div>
             :
                 <a href="/login" className="btn btn-default">Login</a>
 
           }
-          <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
-            <ul className="dropdown-menu">
-              <li><a href="history">History</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" className="divider"></li>
-              <li><a href="#">Separated link</a></li>
-            </ul>
-          </li>
-        </ul>
+      </ul>
       </div>
+
+     
     </div>
   </nav>
+
   <div id="" className="container">
         <Route path="/" exact component={() => <Vocabulary email={this.state.email} />} />
         <Route path='/manage' component={Management} />

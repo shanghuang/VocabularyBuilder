@@ -18,7 +18,8 @@ class Vocabulary extends Component{
             selected_words:new Set(),
             translated:'',
             word_translated : "",
-            message:""
+            message:"",
+            clickWordMessageVisibilityState: false
 		};
 		console.log('constructor!');
 
@@ -42,7 +43,7 @@ class Vocabulary extends Component{
         var text_ary = newtext.split(re);
         var trim_text = text_ary.map( x=>x.trim() ); 
         var word_info = trim_text.map( x=>{return {'word':x, 'selected':false,'voc_status':VOCAB_STATUS.Familiar}});
-        this.setState( {words: word_info});
+        this.setState( {words: word_info, clickWordMessageVisibilityState:true});
 
         var data = {words: trim_text};
         var result = await api.get('/vocabulary',null, data);
@@ -125,9 +126,13 @@ class Vocabulary extends Component{
     <div className="col-md-6">
         <form>
             <div className="form-group">
-                <textarea className = "form-control" rows = "3" value={this.state.text} onChange={this.handleTextChange} placeholder = "Paste text here!"></textarea>
+                <textarea className = "form-control" rows = "8" value={this.state.text} onChange={this.handleTextChange} placeholder = "Paste text here!"></textarea>
             </div>
         </form>
+        <div >
+            {this.state.clickWordMessageVisibilityState ? "Click words below to a dd to vocabulary" : ""}
+            
+        </div>
         <div style={style_text_wrap}>
             {words.map( wi => <ClickText word_info={wi}  clickHandler={this.handleWordClick}/> )}
         </div>
