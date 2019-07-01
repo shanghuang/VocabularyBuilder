@@ -164,7 +164,8 @@ function getVocabulary(req,resp){
     }
 
     var jobs = words.map( async element => {
-        return await VocabRecord.find({word : element.toLowerCase()});
+        //return await VocabRecord.find({word : element.toLowerCase()});
+        return await VocabRecord.find({lemmatized : lemmatizer.lemmatizer(element.toLowerCase())});
     });
 
     

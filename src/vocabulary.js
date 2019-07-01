@@ -130,7 +130,7 @@ class Vocabulary extends Component{
             </div>
         </form>
         <div >
-            {this.state.clickWordMessageVisibilityState ? "Click words below to a dd to vocabulary" : ""}
+            {this.state.clickWordMessageVisibilityState ? "點擊新增單字" : ""}
             
         </div>
         <div style={style_text_wrap}>
@@ -141,7 +141,7 @@ class Vocabulary extends Component{
         <div style={style_text_wrap}>
         {Array.from(this.state.selected_words).map( w =>{ return (<div> {w} <br/></div>); } ) }
         </div>
-        <button className="btn btn-default" type="button" disabled={!isLogin} onClick={this.handleAddVocabulary}>Update Vocabulary</button>
+        <button className="btn btn-default" type="button" disabled={!isLogin} onClick={this.handleAddVocabulary}>新增單字</button>
         <div style={style_text_wrap}>
             <span>{this.state.word_translated}</span>
             <p dangerouslySetInnerHTML={{__html: this.state.translated}} />

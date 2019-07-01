@@ -7,6 +7,7 @@ import Vocabulary from './vocabulary'
 import History from './history'
 import Login from './login'
 import Register from './register'
+import QAndA from './qanda'
 import api from './shared/apiHelper'
 //import cookie from 'cookie'
 import { withCookies, Cookies } from 'react-cookie';
@@ -127,7 +128,7 @@ class Layout extends Component {
           { this.state.email ?
               <div className="nav navbar-nav">
                 <li><a href="#">{this.state.email}</a></li>
-                <li><button type="button" className="btn btn-default" onClick={this.logout}>Logout</button></li>              </div>
+                <li><button type="button" className="btn btn-default navbar-btn" onClick={this.logout}>Logout</button></li>              </div>
             :
                 <a href="/login" className="btn btn-default">Login</a>
 
@@ -145,6 +146,7 @@ class Layout extends Component {
         <Route path='/history' component={() => <History email={this.state.email} />}/>
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
+        <Route path='/qanda' component={QAndA} />
   </div>
 </div>
 );
