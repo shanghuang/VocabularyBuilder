@@ -20,7 +20,9 @@ class Login extends Component{
 			email:'',
 			password: '',
 			rememberMe: false,
-			login_success: false
+			login_success: false,
+			incorrectUser:false,
+			incorrectPassword:false
 		};
 		console.log('constructor!');
 		this.handleLogin = this.handleLogin.bind(this);
@@ -42,17 +44,28 @@ class Login extends Component{
 			'email': this.state.email,
 			'password': this.state.password,
 		};
-
+		this.setState( { incorrectUser : false,
+						incorrectPassword : false});
 		let result = await api.post('/access_token',data);
 		if(result != null){
-			var token = result.body.access_token;
+			if(result.body.access_token){
+				var token = result.body.access_token;
 
-	        this.props.onLogin({
-	          'email': this.state.email,
-	          'access_token': token,
-	        });
-	        this.props.cookies.set('access_token', token);
-	        this.setState({login_success:true});
+				this.props.onLogin({
+				'email': this.state.email,
+				'access_token': token,
+				});
+				this.props.cookies.set('access_token', token);
+				this.setState({login_success:true});
+			}
+			else if(result.body.error_code){
+				if(result.body.error_code == 40102){
+					this.setState( { incorrectPassword : true });
+				} 
+				else if(result.body.error_code == 40101){
+					this.setState( { incorrectUser : true });
+				} 
+			}
 		}
 		else{
 			//todo:error response
@@ -64,34 +77,6 @@ class Login extends Component{
 	        });
 	        this.props.cookies.remove('access_token');
 		}
-
-		/*var that = this;
-		api.post('/access_token',data).end( (err, result) => {
-			if(!err){
-				if(result.body.error_code != null){
-					var a=0;
-				}
-				//var token = cookie.load('access_token');
-				var token = result.body.access_token;
-
-		        that.props.onLogin({
-		          'username': that.state.username,
-		          //'email': "",
-		        });
-		        that.props.cookies.set('access_token', token);
-		        that.setState({login_success:true});
-	    		//that.context.history.push(null, '/manage/user');
-			}
-			else {
-				console.log('error:' + err);
-				that.props.onLogin({
-		          'username': null,
-		          'email': null,
-		          'access_token':null,
-		        });
-		        that.props.cookies.remove('access_token');
-			}
-		});*/
 	}
 
 //	onChange:function(event, userinfo){
@@ -114,6 +99,13 @@ class Login extends Component{
       </label>
       <button className="btn btn-lg btn-primary btn-block" type="submit" >Login</button>
     </form>
+		{
+			this.state.incorrectUser && <div className="login-alert">* The email you entered does not belong to any account.'</div>
+		}
+		{
+			this.state.incorrectPassword && <div className="login-alert">* The password you entered is incorrect.'</div>
+		}
+				
     <Link to="/register" className="text-center new-account" >Create an account </Link>
 </div>
 

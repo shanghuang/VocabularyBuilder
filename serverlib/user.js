@@ -209,6 +209,9 @@ async function post_login(req,resp){
             console.log( "encoded_passwd:"+encoded_passwd);
             if(result.password != encoded_passwd){
                 console.log( "login password not match!");
+                resp.json({
+                    error_code : 40102
+                }).end();
             }
             else{
                 var token = uuid.v4();
@@ -221,7 +224,9 @@ async function post_login(req,resp){
             }
         }
         else{
-            //todo:
+            resp.json({
+                error_code : 40101
+            }).end();
         }
     }
     catch ( err ){
