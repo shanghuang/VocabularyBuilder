@@ -39,14 +39,14 @@ class Vocabulary extends Component{
         this.setState({text: event.target.value});
         
         var newtext = event.target.value;
-        var re = /[ \n;:,.]/; 
+        var re = /[ \n;:,."”“()]/; 
         var text_ary = newtext.split(re);
         var trim_text = text_ary.map( x=>x.trim() ); 
         var word_info = trim_text.map( x=>{return {'word':x, 'selected':false,'voc_status':VOCAB_STATUS.Familiar}});
         this.setState( {words: word_info, clickWordMessageVisibilityState:true});
 
-        var data = {words: trim_text};
-        var result = await api.get('/vocabulary',null, data);
+        var data = {words: JSON.stringify(trim_text)};
+        var result = await api.get('/vocabulary',null, data );
 		if( (result != null) && (this.state.words.length!=0) && (result.body.voc_state!=null) && (result.body.voc_state.length!=0)){
             var voc_state = result.body.voc_state;
             var words = this.state.words;

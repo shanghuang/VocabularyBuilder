@@ -64,7 +64,7 @@ function post(req,resp){
 
     var words2add = JSON.parse(req.body.words2add.toLowerCase());
     var paragraph = req.body.paragraph.toLowerCase();
-    var re = /[ \n;:,.]/; 
+    var re = /[ \n;:,."”“()]/; 
     var text_ary = paragraph.split(re);
     var lemmatized_ary = text_ary.map( x=> lemmatizer.lemmatizer(x.toLowerCase()));
 
@@ -155,7 +155,8 @@ let VOCAB_STATUS={
 
 function getVocabulary(req,resp){
 
-    var words = req.query.words;
+    //var words = req.query.words;
+    var words = JSON.parse(req.query.words.toLowerCase());
     if(words.length == 0){
         resp.json({
             'voc_state':[],
