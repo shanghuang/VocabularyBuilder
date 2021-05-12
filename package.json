@@ -15,7 +15,7 @@
     "mongodb": "^3.2.7",
     "mongoose": "^5.0.15",
     "node-uuid": "^1.4.8",
-    "nodemailer": "^4.6.4",
+    "nodemailer": "^6.4.16",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-app-polyfill": "^1.0.1",
